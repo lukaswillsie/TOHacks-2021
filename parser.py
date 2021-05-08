@@ -55,7 +55,7 @@ class TextParser:
             else:
                 temp = []
             if 'TO' in temp:
-                res.append(range(vals[i], vals[i + 1]))
+                res.append(range(vals[i], vals[i + 1] + 1))
                 i += 1
             else:
                 res.append(vals[i])
