@@ -29,7 +29,7 @@ class Instruction:
             return
 
         # Extract verb
-        verb, nouns = extract_parts(self.text)
+        verb = extract_verb(self.text)
 
         # Extract operation
         if verb in operation.operation_dict:
