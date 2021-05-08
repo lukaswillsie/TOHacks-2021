@@ -1,3 +1,4 @@
+"""
 import nltk
 from nltk import word_tokenize, pos_tag
 from nltk.corpus import wordnet
@@ -12,3 +13,18 @@ for ss in wordnet.synsets('sum'):
 
 parser = Parser()
 print(parser.parse("Find the sum from 1 to 100"))
+"""
+
+
+def main(text):
+    instruction = Instruction(text)
+    instruction.translate()
+    if instruction.instruction is not None:
+        result = exec(instruction.instruction)
+        print(result)
+        return
+
+    print("Error. These commands could not be parsed.")
+
+if __name__ == "__main__":
+    main("Sum the numbers from 1 to 100.")
