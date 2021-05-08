@@ -27,7 +27,7 @@ class TextParser:
     def extract_verb_math(self):
         for i in range(len(self.parsed_text)):
             word = self.parsed_text[i]
-            if 'N' in word[1] or 'V' in word[1]:
+            if 'N' in word[1] or 'V' in word[1] or "R" in word[1] or "J" in word[1]:
                 for ops in self.math_ops:
                     if self.equals(ops, word[0]):
                         self.verb = ops
@@ -64,7 +64,7 @@ class TextParser:
         return res
 
     def equals(self, word1, word2):
-        return word2 in self.get_synonyms(word1) or word1 in self.get_synonyms(word2)
+        return word2 in self.get_synonyms(word1) or word1 in self.get_synonyms(word2) or word1.lower() == word2.lower()
     
     def get_synonyms(self, word):
         s = set()
@@ -76,12 +76,12 @@ class TextParser:
 
 
 if __name__ == "__main__":
-    text = "Multiply the numbers from 1 and 15"
-    # custom_sent_tokenizer = PunktSentenceTokenizer(text)
-    # tokenized = custom_sent_tokenizer.tokenize(text)
-    # words = nltk.word_tokenize(tokenized[0])
-    # tagged = nltk.pos_tag(words)
-    # print(tagged)
+    text = "subtract 8 by 4"
+    custom_sent_tokenizer = PunktSentenceTokenizer(text)
+    tokenized = custom_sent_tokenizer.tokenize(text)
+    words = nltk.word_tokenize(tokenized[0])
+    tagged = nltk.pos_tag(words)
+    print(tagged)
     parser = TextParser(text)
     print(parser.extract_verb_math())
     print(parser.collect_args_math())
