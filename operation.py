@@ -32,8 +32,6 @@ subtraction = Operation("-", True)
 multiplication = Operation("*", False, initial_value = "1")
 division = Operation("/", True)
 exponentiation = Operation("**", True)
-modulus = Operation("%", True)
-floor_division = Operation("//", True)
 
 operation_dict = {
     "add" : addition,
@@ -43,6 +41,5 @@ operation_dict = {
     "divide" : division,
     "subtract" : subtraction,
     "exponentiate" : exponentiation,
-    "mod" : modulus,
-    "integer divide" : floor_division
-}
+    "power" : exponentiation
+    }
