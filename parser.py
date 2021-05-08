@@ -39,7 +39,7 @@ class TextParser:
                         self.verb = ops
                         return True
         return False
-            
+
     def collect_args_math(self):
         idx = []
         vals = []
@@ -65,7 +65,7 @@ class TextParser:
 
     def equals(self, word1, word2):
         return word2 in self.get_synonyms(word1) or word1 in self.get_synonyms(word2)
-    
+
     def get_synonyms(self, word):
         s = set()
         for ss in wordnet.synsets(word):

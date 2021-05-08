@@ -21,7 +21,6 @@ def main(text):
     instruction = Instruction(text)
     instruction.translate()
     if instruction.instruction is not None:
-        print(instruction.instruction)
         exec(instruction.instruction)
         return
 
