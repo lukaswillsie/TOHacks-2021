@@ -21,8 +21,8 @@ def main(text):
     instruction = Instruction(text)
     instruction.translate()
     if instruction.instruction is not None:
-        result = exec(instruction.instruction)
-        print(result)
+        print(instruction.instruction)
+        exec(instruction.instruction)
         return
 
     print("Error. These commands could not be parsed.")
