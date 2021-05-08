@@ -10,7 +10,7 @@ def ping():
 
 @app.route('/')
 def hello():
-    return 'Hello World!'
+    return {'data': 'Hello World!'}, {"Access-Control-Allow-Origin": '*'}
 
 
 if __name__ == '__main__':
