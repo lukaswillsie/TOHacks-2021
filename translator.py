@@ -39,7 +39,12 @@ class Instruction:
         return None
 
     def extract_all(text): #TODO
-        return operation.operation_dict["sum"], range(1,11)
+        return operation.operation_dict["sum"], [11,3,1001,1]
+
+    def binary_translate(operation, arguments):
+        if len(arguments) != 2:
+            return None
+        return "print(" + str(arguments[0]) + " " + str(operation.operation) + " " + str(arguments[1]) + ") \n"
 
     def default_translate(text):
         """Returns the Python code for <text> provided that the verb refers to a
@@ -49,8 +54,8 @@ class Instruction:
         operation, arguments = Instruction.extract_all(text)
 
         if operation.binary:
-            if len(arguments) != 2:
-                return None
+            return Instruction.binary_translate(operation, arguments)
+
 
         # Extract Python instruction
         instruction = "total = " + str(operation.initial_value) + " \n"
