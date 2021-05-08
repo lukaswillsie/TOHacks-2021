@@ -1,5 +1,6 @@
 import operation
 from parser import *
+from collections.abc import Iterable
 """
 import nltk
 from nltk import word_tokenize, pos_tag
@@ -61,7 +62,11 @@ class Instruction:
         # Extract Python instruction
         instruction = "total = " + str(operation.initial_value) + " \n"
         for arg in arguments:
-            instruction += "total = total " + str(operation.operation) + " " + str(arg) + " \n"
+            if not isinstance(arg, Iterable):
+                instruction += "total = total " + str(operation.operation) + " " + str(arg) + " \n"
+            else:
+                for a in arg:
+                    instruction += "total = total " + str(operation.operation) + " " + str(a) + " \n"
         instruction += "print(total) \n" # What should this be?
 
         return instruction
