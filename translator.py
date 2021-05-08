@@ -56,7 +56,7 @@ class Instruction:
         instruction = "total = " + str(operation.initial_value) + " \n"
         for arg in arguments:
             instruction += "total = total " + str(operation.operation) + " " + str(arg) + " \n"
-        instruction += "total \n" # What should this be?
+        instruction += "print(total) \n" # What should this be?
 
         return instruction
 
