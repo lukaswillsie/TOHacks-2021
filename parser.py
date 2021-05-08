@@ -6,6 +6,13 @@ from nltk.corpus import wordnet
 from IPython.display import display
 from stat_parser import Parser
 
+synonym_dict = {
+    'add' : (),
+    'subtract' : ('minus'),
+    'multiply' : ('product'),
+    'divide' : (),
+    'power' : ('exponentiate')
+    }
 
 class TextParser:
 
@@ -15,7 +22,8 @@ class TextParser:
             'add',
             'multiply',
             'divide',
-            'subtract'
+            'subtract',
+            'power'
         )
         custom_sent_tokenizer = PunktSentenceTokenizer(text)
         tokenized = custom_sent_tokenizer.tokenize(text)
@@ -64,7 +72,8 @@ class TextParser:
         return res
 
     def equals(self, word1, word2):
-        return word2 in self.get_synonyms(word1) or word1 in self.get_synonyms(word2) or word1.lower() == word2.lower()
+        return word2 in self.get_synonyms(word1) or word1 in self.get_synonyms(word2) or word1.lower() == word2.lower() \
+            or word2 in synonym_dict[word1]
 
     def get_synonyms(self, word):
         s = set()
@@ -76,7 +85,7 @@ class TextParser:
 
 
 if __name__ == "__main__":
-    text = "subtract 8 by 4"
+    text = "product 8 by 4"
     custom_sent_tokenizer = PunktSentenceTokenizer(text)
     tokenized = custom_sent_tokenizer.tokenize(text)
     words = nltk.word_tokenize(tokenized[0])
