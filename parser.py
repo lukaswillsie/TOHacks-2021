@@ -76,7 +76,6 @@ class TextParser:
 
 
 if __name__ == "__main__":
-    parser = Parser()
     text = "Multiply the numbers from 1 and 15"
     # custom_sent_tokenizer = PunktSentenceTokenizer(text)
     # tokenized = custom_sent_tokenizer.tokenize(text)

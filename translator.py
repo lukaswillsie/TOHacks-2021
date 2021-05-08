@@ -1,5 +1,5 @@
 import operation
-
+from parser import *
 """
 import nltk
 from nltk import word_tokenize, pos_tag
@@ -38,9 +38,6 @@ class Instruction:
 
         return None
 
-    def extract_all(text): #TODO
-        return operation.operation_dict["sum"], [11,3,1001,1]
-
     def binary_translate(operation, arguments):
         if len(arguments) != 2:
             return None
@@ -50,8 +47,12 @@ class Instruction:
         """Returns the Python code for <text> provided that the verb refers to a
         standard operation."""
 
-        # Extract all
-        operation, arguments = Instruction.extract_all(text)
+        # Extract operation and arguments
+        parser = TextParser(text)
+        parser.extract_verb_math()
+        verb = parser.verb
+        operation = Instruction.extract_operation(verb)
+        arguments = parser.collect_args_math()
 
         if operation.binary:
             return Instruction.binary_translate(operation, arguments)
@@ -71,8 +72,10 @@ class Instruction:
             self.instruction = None
             return
 
-        # Extract verb
-        verb = Instruction.extract_verb(self.text)
+        # Extract verbparser = Parser()
+        parser = TextParser(self.text)
+        parser.extract_verb_math()
+        verb = parser.verb
 
         # Extract operation
         operation = Instruction.extract_operation(verb)
