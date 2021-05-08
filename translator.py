@@ -19,13 +19,13 @@ class Instruction:
     original English instruction and then processes it into a Python command.
     """
 
-    def __init__(self, text):
-        self.text = text # Raw text
-        self.instruction = None # Python code
-
     def clean_word(word): #TODO
         """Apply all needed preprocessing to <word> and return the result."""
         return word.lower().strip()
+
+    def __init__(self, text):
+        self.text = Instruction.clean_word(text) # Raw text
+        self.instruction = None # Python code
 
     def extract_verb(text): #TODO
         """Extract the verb or main action word from <text> and return it."""
