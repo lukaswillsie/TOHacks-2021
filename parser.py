@@ -17,6 +17,18 @@ synonym_dict = {
     'question' : ()
     }
 
+anti_synonym_dict = {
+    'add' : (),
+    'subtract' : (),
+    'multiply' : (),
+    'divide' : (),
+    'power' : (),
+    'about' : (),
+    'summarize' : ('sum',),
+    'translate' : (),
+    'question' : ()
+}
+
 class TextParser:
 
     def __init__(self, text):
@@ -154,8 +166,8 @@ class TextParser:
 
     def equals(self, word1, word2):
 
-        return word2 in self.get_synonyms(word1) or word1 in self.get_synonyms(word2) or word1.lower() == word2.lower() \
-            or word2 in synonym_dict[word1]
+        return (word2 in self.get_synonyms(word1) or word1 in self.get_synonyms(word2) or word1.lower() == word2.lower() \
+            or word2 in synonym_dict[word1]) and word2 not in anti_synonym_dict[word1]
 
     def get_synonyms(self, word):
         s = set()
@@ -167,7 +179,7 @@ class TextParser:
 
 
 if __name__ == "__main__":
-    text = "what is the capital of canada"
+    text = "what is the sum of 8 and 9 and 10 and 11"
     custom_sent_tokenizer = PunktSentenceTokenizer(text)
     tokenized = custom_sent_tokenizer.tokenize(text)
     words = nltk.word_tokenize(tokenized[0])
