@@ -67,7 +67,7 @@ class TextParser:
     
     def extract_verb_summary(self):
         self.verb = 'summarize'
-        return 'summarize'
+        return ['summarize']
     
     def extract_verb(self):
         temp = self.get_synonyms('summarize').union(self.get_synonyms('find'))
@@ -75,7 +75,7 @@ class TextParser:
             for ops in self.ops:
                 if self.equals(ops, word[0]):
                     self.verb = ops
-                    return ops
+                    return [ops]
         return self.extract_verb_math()
 
     def collect_args_math(self):
