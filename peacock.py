@@ -27,4 +27,4 @@ def main(text):
     print("Error. These commands could not be parsed.")
 
 if __name__ == "__main__":
-    main("Add 7 and 8")
+    main("Summarize an article about cruise ships")
