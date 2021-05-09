@@ -33,6 +33,8 @@ class Instruction:
 
         if len(arguments) == 1:
             return "total = total " + str(operation.operation) + " " + str(arguments[0]) + "\n"
+        if str(operation.operation) == "-":
+            return "total = " + str(arguments[1]) + " " + str(operation.operation) + " " + str(arguments[0]) + "\n"
         return "total = " + str(arguments[0]) + " " + str(operation.operation) + " " + str(arguments[1]) + "\n"
 
     def default_translate(text):
