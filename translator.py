@@ -63,7 +63,6 @@ class Instruction:
                     for a in arg:
                         instruction += "total = total " + str(operation.operation) + " " + str(a) + " \n"
 
-        instruction += "print(total) \n" # What should this be?
         #print("i", instruction)
         return instruction
 
