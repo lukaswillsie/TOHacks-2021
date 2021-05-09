@@ -40,15 +40,15 @@ class Instruction:
         parser = TextParser(text)
         parser.extract_verb()
         verbs = parser.verb
-        print("verbs", verbs)
         operations = [Instruction.extract_operation(verb) for verb in verbs]
         arguments = parser.collect_args()
-
+        #print(verbs, operations, arguments)
+        instruction = ""
         for i in range(len(operations)):
-            print(verbs, operations, arguments)
             operation = operations[i]
             if operation.binary:
-                return Instruction.binary_translate(operation, arguments[i])
+                instruction += Instruction.binary_translate(operation, arguments[i])
+                continue
 
             # Extract Python instruction
             if i == 0:
@@ -59,8 +59,9 @@ class Instruction:
                 else:
                     for a in arg:
                         instruction += "total = total " + str(operation.operation) + " " + str(a) + " \n"
-                        instruction += "print(total) \n" # What should this be?
 
+        instruction += "print(total) \n" # What should this be?
+        #print("i", instruction)
         return instruction
 
     def translate(self):
@@ -72,11 +73,11 @@ class Instruction:
         # Extract verbparser = Parser()
         parser = TextParser(self.text)
         parser.extract_verb()
-        verb = parser.verb
-
+        verbs = parser.verb
+        print("v", verbs)
         # Extract operation
-        operation = Instruction.extract_operation(verb)
-        if operation.standard:
+        operations = [Instruction.extract_operation(verb) for verb in verbs]
+        if operations[0].standard:
             self.instruction = Instruction.default_translate(self.text)
         else:
-            self.instruction = operation.translate(self.text)
+            self.instruction = operations[0].translate(self.text)
