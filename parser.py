@@ -1,5 +1,4 @@
 import nltk
-from nltk.corpus import state_union
 from nltk.tokenize import PunktSentenceTokenizer
 from nltk import word_tokenize, pos_tag
 from nltk.corpus import wordnet
@@ -51,6 +50,14 @@ class TextParser:
         self.verb = []
         self.verb_ranges = []
         self.language = ''
+        self.keywords = ['odd', 'even', 'prime', 'composite', 'square', 'cube']
+        self.special = sum([word[0] in self.keywords for word in self.parsed_text]) > 0
+        self.special_keywords = set()
+        for word in self.keywords:
+            if word[0] in self.keywords:
+                self.special_keywords.add(word[0])
+        self.special_keywords = list(self.special_keywords)
+        
 
     def extract_verb_math(self):
         ids = []
@@ -179,7 +186,7 @@ class TextParser:
 
 
 if __name__ == "__main__":
-    text = "what is the sum of 8 and 9 and 10 and 11"
+    text = "sum of all the odd numbers from 1 to 100"
     custom_sent_tokenizer = PunktSentenceTokenizer(text)
     tokenized = custom_sent_tokenizer.tokenize(text)
     words = nltk.word_tokenize(tokenized[0])
@@ -190,4 +197,5 @@ if __name__ == "__main__":
     print('summarize: ', parser.get_synonyms('summarize'))
     print('is: ', parser.get_synonyms('is'))
     print(parser.extract_verb())
+    print(parser.special_keywords)
     print(parser.collect_args())
