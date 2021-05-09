@@ -15,7 +15,7 @@ def news_translate(text):
     parser = TextParser(text)
     parser.extract_verb()
     arguments = parser.collect_args()
-    instruction = "from news_content_extraction_by_keyword import *\nprint(summarize_article_search(\"" + " ".join(arguments)+ "\"))\n"
+    instruction = "from news_content_extraction_by_keyword import *\ntotal = summarize_article_search(\"" + " ".join(arguments)+ "\")\n"
     return instruction
 
 def language_translate(text):
@@ -32,7 +32,7 @@ def language_translate(text):
             break
 
     language_code
-    instruction = "from language_translate import *\nprint(translate_text(\"" + str(language_code) + "\", \"" + arguments + "\"))\n"
+    instruction = "from language_translate import *\ntotal =translate_text(\"" + str(language_code) + "\", \"" + arguments + "\")\n"
     return instruction
 
 

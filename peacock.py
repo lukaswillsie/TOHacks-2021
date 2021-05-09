@@ -21,10 +21,11 @@ def main(text):
     instruction = Instruction(text)
     instruction.translate()
     if instruction.instruction is not None:
-        exec(instruction.instruction)
-        return
+        context = {}
+        exec(instruction.instruction, context)
+        return context["total"]
 
-    print("Error. These commands could not be parsed.")
+    return "Error. These commands could not be parsed."
 
 if __name__ == "__main__":
-    main("Translate to Russian I love food.")
+    print(main("Translate to korean My name is Vaskar."))
