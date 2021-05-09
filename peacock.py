@@ -1,4 +1,8 @@
+import os
+
 from translator import *
+
+nltk.data.path.append(os.getcwd() + os.sep + "nltk_data")
 """
 import nltk
 from nltk import word_tokenize, pos_tag

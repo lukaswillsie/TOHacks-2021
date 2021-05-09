@@ -1,4 +1,4 @@
-from parser import *
+from local_parser import *
 from google.cloud import translate_v2
 import six
 
@@ -9,7 +9,6 @@ operation_word_map = {"sum": "+",
                       "exponentiate": "**",
                       "modulus": "%",
                       "floor division": "%"}
-
 
 def news_translate(text):
     parser = TextParser(text)
@@ -38,7 +37,6 @@ def language_translate(text):
 def qa_translate(text):
     instruction = "from qa import *\ntotal = answer_question(\"" + text + "\")\n"
     return instruction
-
 
 class Operation:
     """A class where each object stores the relevant information about an
@@ -69,7 +67,6 @@ exponentiation = Operation(operation = "**", binary = True)
 news_extract = Operation(standard = False, translate = news_translate)
 translate = Operation(standard = False, translate = language_translate)
 qa = Operation(standard = False, translate = qa_translate)
-
 operation_dict = {
     "add" : addition,
     "sum" : addition,

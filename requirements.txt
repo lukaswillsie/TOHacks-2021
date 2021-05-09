@@ -1,1 +1,10 @@
 flask
+nltk
+googlesearch-python
+IPython
+six
+google-cloud-translate
+newspaper3k
+news-please
+langdetect
+openai

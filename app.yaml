@@ -1,1 +1,5 @@
 runtime: python39
+instance_class: F4
+env_variables:
+  GOOGLE_APPLICATION_CREDENTIALS: "peacock-313205-c26593c00dc1.json"
+  NLTK_DATA: './nltk_data/'

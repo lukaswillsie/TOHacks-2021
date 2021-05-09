@@ -2,12 +2,9 @@
 from googlesearch import search # news url extracting API: https://python-googlesearch.readthedocs.io/en/latest/ , https://python-googlesearch.readthedocs.io/en/latest/_modules/googlesearch.html command: pip install google
 from newspaper import Article # newspaper API: https://buildmedia.readthedocs.org/media/pdf/newspaper/latest/newspaper.pdf command: pip install newspaper3k
 from newsplease import NewsPlease # news-please API: https://github.com/fhamborg/news-please command: pip install news-please
-import os
 import re
-import pandas as pd
-from typing import List, Tuple
+from typing import Tuple
 from langdetect import detect
-import os
 import openai
 import random
 
