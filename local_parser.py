@@ -53,7 +53,7 @@ class TextParser:
         self.verb = []
         self.verb_ranges = []
         self.language = ''
-        self.keywords = ['odd', 'even', 'prime', 'composite', 'square', 'cube']
+        self.keywords = ['odd', 'even', 'prime', 'composite', 'squares', 'square', 'cubes', 'cube']
         self.special = sum([word[0] in self.keywords for word in self.parsed_text]) > 0
         self.special_keywords = set()
         for word in self.parsed_text:
@@ -65,6 +65,8 @@ class TextParser:
             "even": lambda x: x% 2 == 0,
             "square": lambda x: math.sqrt(x).is_integer(),
             "cube":lambda x: (x**(1./3.)).is_integer(),
+            "squares": lambda x: math.sqrt(x).is_integer(),
+            "cubes":lambda x: (x**(1./3.)).is_integer(),
             "prime": lambda x: x > 1 and all(x % i for i in islice(count(2), int(sqrt(x)-1))),
             "composite": lambda x: x > 1 and not all(x % i for i in islice(count(2), int(sqrt(x)-1)))
         }
@@ -209,10 +211,8 @@ class TextParser:
                 s.add(wordz)
         return s
 
-
-
 if __name__ == "__main__":
-    text = "sum of all the odd and prime numbers from 1 to 100"
+    text = "sum the odd perfect squares from 1 to 100"
     custom_sent_tokenizer = PunktSentenceTokenizer(text)
     tokenized = custom_sent_tokenizer.tokenize(text)
     words = nltk.word_tokenize(tokenized[0])
