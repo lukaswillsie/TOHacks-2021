@@ -32,4 +32,4 @@ def main(text):
     return "Error. These commands could not be parsed."
 
 if __name__ == "__main__":
-    print(main("Add+6+to+7"))
+    print(main("Add the numbers 6 and 7."))

@@ -3,19 +3,31 @@ from nltk.corpus import state_union
 from nltk.tokenize import PunktSentenceTokenizer
 from nltk import word_tokenize, pos_tag
 from nltk.corpus import wordnet
-from IPython.display import display
 from stat_parser import Parser
 
 synonym_dict = {
-    'add' : ('plus'),
-    'subtract' : ('minus'),
-    'multiply' : ('product'),
+    'add' : ('plus',),
+    'subtract' : ('minus',),
+    'multiply' : ('product',),
     'divide' : (),
-    'power' : ('exponentiate'),
+    'power' : ('exponentiate',),
     'about' : ('regarding', 'concerning'),
-    'summarize' : ('summarise'),
-    'translate' : ()
+    'summarize' : ('summarise',),
+    'translate' : (),
+    'question' : ()
     }
+
+anti_synonym_dict = {
+    'add' : (),
+    'subtract' : (),
+    'multiply' : (),
+    'divide' : (),
+    'power' : (),
+    'about' : (),
+    'summarize' : ('sum',),
+    'translate' : (),
+    'question' : ()
+}
 
 class TextParser:
 
@@ -72,12 +84,20 @@ class TextParser:
     
     def extract_verb(self):
         temp = self.get_synonyms('summarize').union(self.get_synonyms('find'))
+        if self.parsed_text[0][0].lower() in ['who', 'where', 'when', 'why', 'how']:
+            self.verb = ['question']
+            return ['question'] 
         for word in self.parsed_text:
             for ops in self.ops:
                 if self.equals(ops, word[0]):
                     self.verb = [ops]
                     return [ops]
-        return self.extract_verb_math()
+        for word in self.parsed_text:
+            for ops in self.math_ops:
+                if self.equals(ops, word[0]):
+                    return self.extract_verb_math()
+        self.verb = ['question']
+        return ['question']
 
     def collect_args_math(self):
         res = []
@@ -100,8 +120,8 @@ class TextParser:
                 temp = [self.parsed_text[j][1] for j in range(idx[i], idx[i + 1])]
             else:
                 temp = []
-            if 'TO' in temp:
-                res.append(range(vals[i], vals[i + 1] + 1))
+            if 'TO' in temp and ('from' in self.parsed_text[idx[i] - 1][0] or 'between' in self.parsed_text[idx[i] - 1][0]):
+                res.append(range(min(vals[i], vals[i + 1]), max(vals[i], vals[i + 1]) + 1))
                 i += 1
             else:
                 res.append(vals[i]) 
@@ -139,12 +159,15 @@ class TextParser:
             return self.collect_args_summary()
         elif self.verb[0] == 'translate':
             return self.collect_args_translate()
+        elif self.verb[0] == 'question':
+            return " ".join([word[0] for word in self.parsed_text])
         else:
             return self.collect_args_math()
 
     def equals(self, word1, word2):
-        return word2 in self.get_synonyms(word1) or word1 in self.get_synonyms(word2) or word1.lower() == word2.lower() \
-            or word2 in synonym_dict[word1]
+
+        return (word2 in self.get_synonyms(word1) or word1 in self.get_synonyms(word2) or word1.lower() == word2.lower() \
+            or word2 in synonym_dict[word1]) and word2 not in anti_synonym_dict[word1]
 
     def get_synonyms(self, word):
         s = set()
@@ -156,13 +179,15 @@ class TextParser:
 
 
 if __name__ == "__main__":
-    text = "add 7 and 8 multiply by 6"
+    text = "what is the sum of 8 and 9 and 10 and 11"
     custom_sent_tokenizer = PunktSentenceTokenizer(text)
     tokenized = custom_sent_tokenizer.tokenize(text)
     words = nltk.word_tokenize(tokenized[0])
     tagged = nltk.pos_tag(words)
     print(tagged)
     parser = TextParser(text)
-    print(parser.get_synonyms('about'))
+    print(parser.equals('summarize', 'is'))
+    print('summarize: ', parser.get_synonyms('summarize'))
+    print('is: ', parser.get_synonyms('is'))
     print(parser.extract_verb())
     print(parser.collect_args())
