@@ -1,4 +1,4 @@
-from parser import *
+from local_parser import *
 from google.cloud import translate_v2
 import six
 

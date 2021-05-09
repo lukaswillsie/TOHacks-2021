@@ -1,13 +1,15 @@
 from flask import Flask, request
+from peacock import main
 
 app = Flask(__name__)
 
 BASE_HEADERS = {"Access-Control-Allow-Origin": '*'}
 
 
-@app.route("/ping/<text>")
-def ping(text):
-    return {"result": text.upper()}, BASE_HEADERS
+@app.route("/ping")
+def ping():
+    text = request.args.get("text")
+    return {"result": main(text)}, BASE_HEADERS
 
 
 @app.route('/')

@@ -1,4 +1,8 @@
+import os
+
 from translator import *
+
+nltk.data.path.append(os.getcwd() + os.sep + "nltk_data")
 """
 import nltk
 from nltk import word_tokenize, pos_tag
@@ -28,4 +32,4 @@ def main(text):
     return "Error. These commands could not be parsed."
 
 if __name__ == "__main__":
-    print(main("Translate to korean My name is Vaskar."))
+    print(main("Add+6+to+7"))
