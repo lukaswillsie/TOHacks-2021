@@ -1,2 +1,1 @@
-This repo contains the code for the Flask backend, which you can find over at https://github.com/lukaswillsie/TOHacks-2021.
-The actual website we built for TOHacks 2021 is hosted at https://storage.googleapis.com/eastern-cosmos-313116.appspot.com/index.html.
+This repo contains the code for the Flask backend of our React site. You can find the site over at https://github.com/lukaswillsie/ToHacks-2021-Website. The website is hosted at https://storage.googleapis.com/eastern-cosmos-313116.appspot.com/index.html.
