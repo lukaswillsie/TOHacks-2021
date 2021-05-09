@@ -1,3 +1,6 @@
+import os
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "peacock-313205-c26593c00dc1.json"
+
 from flask import Flask, request
 from peacock import main
 
