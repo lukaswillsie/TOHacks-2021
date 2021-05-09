@@ -126,7 +126,7 @@ class TextParser:
     
     def collect_args_translate(self):
         temp = [item[0] for item in self.parsed_text]
-        languages = ['english', 'french', 'spanish', 'korean']
+        languages = ['english', 'french', 'spanish', 'korean', 'russian']
         for word in self.parsed_text:
             if word[0] in languages:
                 language = word[0]
