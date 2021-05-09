@@ -6,13 +6,13 @@ from nltk.corpus import wordnet
 from stat_parser import Parser
 
 synonym_dict = {
-    'add' : ('plus'),
-    'subtract' : ('minus'),
-    'multiply' : ('product'),
+    'add' : ('plus',),
+    'subtract' : ('minus',),
+    'multiply' : ('product',),
     'divide' : (),
-    'power' : ('exponentiate'),
+    'power' : ('exponentiate',),
     'about' : ('regarding', 'concerning'),
-    'summarize' : ('summarise'),
+    'summarize' : ('summarise',),
     'translate' : (),
     'question' : ()
     }
@@ -147,12 +147,13 @@ class TextParser:
             return self.collect_args_summary()
         elif self.verb[0] == 'translate':
             return self.collect_args_translate()
-        elif self.verb[0] == 'questions':
+        elif self.verb[0] == 'question':
             return " ".join([word[0] for word in self.parsed_text])
         else:
             return self.collect_args_math()
 
     def equals(self, word1, word2):
+
         return word2 in self.get_synonyms(word1) or word1 in self.get_synonyms(word2) or word1.lower() == word2.lower() \
             or word2 in synonym_dict[word1]
 
@@ -166,13 +167,15 @@ class TextParser:
 
 
 if __name__ == "__main__":
-    text = "add the numbers 6 and 7"
+    text = "what is the capital of canada"
     custom_sent_tokenizer = PunktSentenceTokenizer(text)
     tokenized = custom_sent_tokenizer.tokenize(text)
     words = nltk.word_tokenize(tokenized[0])
     tagged = nltk.pos_tag(words)
     print(tagged)
     parser = TextParser(text)
-    print(parser.get_synonyms('about'))
+    print(parser.equals('summarize', 'is'))
+    print('summarize: ', parser.get_synonyms('summarize'))
+    print('is: ', parser.get_synonyms('is'))
     print(parser.extract_verb())
     print(parser.collect_args())
