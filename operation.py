@@ -35,6 +35,10 @@ def language_translate(text):
     instruction = "from language_translate import *\ntotal =translate_text(\"" + str(language_code) + "\", \"" + arguments + "\")\n"
     return instruction
 
+def qa_translate(text):
+    instruction = "from qa import *\ntotal = answer_question(\"" + text + "\")\n"
+    return instruction
+
 
 class Operation:
     """A class where each object stores the relevant information about an
@@ -64,6 +68,7 @@ division = Operation(operation = "/", binary = True)
 exponentiation = Operation(operation = "**", binary = True)
 news_extract = Operation(standard = False, translate = news_translate)
 translate = Operation(standard = False, translate = language_translate)
+qa = Operation(standard = False, translate = qa_translate)
 
 operation_dict = {
     "add" : addition,
@@ -75,5 +80,6 @@ operation_dict = {
     "exponentiate" : exponentiation,
     "power" : exponentiation,
     "summarize" : news_extract,
-    "translate" : translate
+    "translate" : translate,
+    "question" : qa
     }
