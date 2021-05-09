@@ -9,7 +9,7 @@ from itertools import count, islice
 
 synonym_dict = {
     'add' : ('plus',),
-    'subtract' : ('minus',),
+    'subtract' : ('minus', 'subtracted'),
     'multiply' : ('product',),
     'divide' : (),
     'power' : ('exponentiate',),
