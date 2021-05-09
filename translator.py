@@ -1,18 +1,6 @@
 import operation
 from parser import *
 from collections.abc import Iterable
-"""
-import nltk
-from nltk import word_tokenize, pos_tag
-from nltk.corpus import wordnet
-from IPython.display import display
-from stat_parser import Parser
-
-
-
-for ss in wordnet.synsets('sum'):
-    print(ss.name(), ss.lemma_names())
-"""
 
 class Instruction:
     """A class that represents an instruction. Each object contains the
@@ -27,10 +15,6 @@ class Instruction:
         self.text = Instruction.clean_word(text) # Raw text
         self.instruction = None # Python code
 
-    def extract_verb(text): #TODO
-        """Extract the verb or main action word from <text> and return it."""
-        return "sum"
-
     def extract_operation(verb): #TODO
         """Extract the operation from <verb>."""
         verb = Instruction.clean_word(verb)
@@ -40,9 +24,13 @@ class Instruction:
         return None
 
     def binary_translate(operation, arguments):
-        if len(arguments) != 2:
+
+        if len(arguments) not in [1,2]:
             return None
-        return "print(" + str(arguments[0]) + " " + str(operation.operation) + " " + str(arguments[1]) + ") \n"
+
+        if len(arguments) == 1:
+            return "total = total " + str(operation.operation) + " " + str(arguments[0]) + "\n"
+        return "total = " + str(arguments[0]) + " " + str(operation.operation) + " " + str(arguments[1]) + "\n"
 
     def default_translate(text):
         """Returns the Python code for <text> provided that the verb refers to a
@@ -50,24 +38,28 @@ class Instruction:
 
         # Extract operation and arguments
         parser = TextParser(text)
-        parser.extract_verb_math()
-        verb = parser.verb
-        operation = Instruction.extract_operation(verb)
-        arguments = parser.collect_args_math()
+        parser.extract_verb()
+        verbs = parser.verb
+        print("verbs", verbs)
+        operations = [Instruction.extract_operation(verb) for verb in verbs]
+        arguments = parser.collect_args()
 
-        if operation.binary:
-            return Instruction.binary_translate(operation, arguments)
+        for i in range(len(operations)):
+            print(verbs, operations, arguments)
+            operation = operations[i]
+            if operation.binary:
+                return Instruction.binary_translate(operation, arguments[i])
 
-
-        # Extract Python instruction
-        instruction = "total = " + str(operation.initial_value) + " \n"
-        for arg in arguments:
-            if not isinstance(arg, Iterable):
-                instruction += "total = total " + str(operation.operation) + " " + str(arg) + " \n"
-            else:
-                for a in arg:
-                    instruction += "total = total " + str(operation.operation) + " " + str(a) + " \n"
-        instruction += "print(total) \n" # What should this be?
+            # Extract Python instruction
+            if i == 0:
+                instruction = "total = " + str(operation.initial_value) + " \n"
+            for arg in arguments[i]:
+                if not isinstance(arg, Iterable):
+                    instruction += "total = total " + str(operation.operation) + " " + str(arg) + " \n"
+                else:
+                    for a in arg:
+                        instruction += "total = total " + str(operation.operation) + " " + str(a) + " \n"
+                        instruction += "print(total) \n" # What should this be?
 
         return instruction
 
@@ -79,12 +71,11 @@ class Instruction:
 
         # Extract verbparser = Parser()
         parser = TextParser(self.text)
-        parser.extract_verb_math()
+        parser.extract_verb()
         verb = parser.verb
 
         # Extract operation
         operation = Instruction.extract_operation(verb)
-
         if operation.standard:
             self.instruction = Instruction.default_translate(self.text)
         else:
