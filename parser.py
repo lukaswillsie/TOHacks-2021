@@ -7,7 +7,7 @@ from IPython.display import display
 from stat_parser import Parser
 
 synonym_dict = {
-    'add' : (),
+    'add' : ('plus'),
     'subtract' : ('minus'),
     'multiply' : ('product'),
     'divide' : (),
@@ -38,6 +38,7 @@ class TextParser:
         self.parsed_text = nltk.pos_tag(words)
         self.verb = []
         self.verb_ranges = []
+        self.language = ''
 
     def extract_verb_math(self):
         ids = []
@@ -129,6 +130,7 @@ class TextParser:
         for word in self.parsed_text:
             if word[0] in languages:
                 language = word[0]
+                self.language = language
         idx = max(loc for loc, val in enumerate(temp) if val == language)
         return " ".join(temp[idx + 1:])
     
@@ -154,7 +156,7 @@ class TextParser:
 
 
 if __name__ == "__main__":
-    text = "summarize an article about cruise ships"
+    text = "add 7 and 8 multiply by 6"
     custom_sent_tokenizer = PunktSentenceTokenizer(text)
     tokenized = custom_sent_tokenizer.tokenize(text)
     words = nltk.word_tokenize(tokenized[0])
