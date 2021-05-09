@@ -14,6 +14,7 @@ synonym_dict = {
     'power' : ('exponentiate'),
     'about' : ('regarding', 'concerning'),
     'summarize' : ('summarise'),
+    'translate' : ()
     }
 
 class TextParser:
@@ -134,7 +135,7 @@ class TextParser:
     def collect_args(self):
         if self.verb == 'summarize':
             return self.collect_args_summary()
-        if self.verb == 'translate':
+        elif self.verb == 'translate':
             return self.collect_args_translate()
         else:
             return self.collect_args_math()
@@ -153,7 +154,7 @@ class TextParser:
 
 
 if __name__ == "__main__":
-    text = "translate to english blah blah blah"
+    text = "add 7 and 8"
     custom_sent_tokenizer = PunktSentenceTokenizer(text)
     tokenized = custom_sent_tokenizer.tokenize(text)
     words = nltk.word_tokenize(tokenized[0])
