@@ -1,6 +1,7 @@
 import os
 
-from translator import *
+from translator import Instruction
+import nltk
 
 nltk.data.path.append(os.getcwd() + os.sep + "nltk_data")
 """

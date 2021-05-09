@@ -1,6 +1,7 @@
 from local_parser import *
 from google.cloud import translate_v2
-import six
+
+translate_client = translate_v2.Client()
 
 operation_word_map = {"sum": "+",
                       "product": "*",
@@ -22,7 +23,6 @@ def language_translate(text):
     parser.extract_verb()
     arguments = parser.collect_args()
     language = parser.language
-    translate_client = translate_v2.Client()
     language_lst = translate_client.get_languages()
     language_code = "fr" # Default
     for d in language_lst:
@@ -30,7 +30,6 @@ def language_translate(text):
             language_code = d['language']
             break
 
-    language_code
     instruction = "from language_translate import *\ntotal =translate_text(\"" + str(language_code) + "\", \"" + arguments + "\")\n"
     return instruction
 

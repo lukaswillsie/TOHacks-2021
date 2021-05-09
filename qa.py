@@ -1,4 +1,3 @@
-import os
 import openai
 
 openai.api_key = "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"

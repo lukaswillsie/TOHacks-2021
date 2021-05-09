@@ -1,5 +1,5 @@
 import operation
-from local_parser import *
+from local_parser import TextParser
 from collections.abc import Iterable
 import re
 
