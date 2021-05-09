@@ -100,8 +100,8 @@ class TextParser:
                 temp = [self.parsed_text[j][1] for j in range(idx[i], idx[i + 1])]
             else:
                 temp = []
-            if 'TO' in temp:
-                res.append(range(vals[i], vals[i + 1] + 1))
+            if 'TO' in temp and ('from' in self.parsed_text[idx[i] - 1][0] or 'between' in self.parsed_text[idx[i] - 1][0]):
+                res.append(range(min(vals[i], vals[i + 1]), max(vals[i], vals[i + 1]) + 1))
                 i += 1
             else:
                 res.append(vals[i]) 
@@ -156,7 +156,7 @@ class TextParser:
 
 
 if __name__ == "__main__":
-    text = "add 7 and 8 multiply by 6"
+    text = "add from 8 to 6"
     custom_sent_tokenizer = PunktSentenceTokenizer(text)
     tokenized = custom_sent_tokenizer.tokenize(text)
     words = nltk.word_tokenize(tokenized[0])
