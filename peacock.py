@@ -27,4 +27,4 @@ def main(text):
     print("Error. These commands could not be parsed.")
 
 if __name__ == "__main__":
-    main("Translate to French I love food.")
+    main("Translate to Russian I love food.")
