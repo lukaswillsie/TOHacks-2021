@@ -27,4 +27,4 @@ def main(text):
     print("Error. These commands could not be parsed.")
 
 if __name__ == "__main__":
-    main("integer divide 6 and 4.")
+    main("Add 7 and 8")

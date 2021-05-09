@@ -1,3 +1,5 @@
+from parser import *
+
 operation_word_map = {"sum": "+",
                       "product": "*",
                       "subtract": "-",
@@ -6,12 +8,21 @@ operation_word_map = {"sum": "+",
                       "modulus": "%",
                       "floor division": "%"}
 
+
+def news_translate(text):
+    parser = TextParser(text)
+    parser.extract_verb()
+    arguments = parser.collect_args()
+    instruction = "from news_content_extraction_by_keyword import *\nprint(summarize_article_search(\"" + " ".join(arguments)+ "\"))\n"
+    return instruction
+
+
 class Operation:
     """A class where each object stores the relevant information about an
     operation for translation.
     """
 
-    def __init__(self, operation, binary, initial_value = None, standard = True, translate = None):
+    def __init__(self, operation = None, binary = False, initial_value = None, standard = True, translate = None):
         """Initialize an object associated with the operation string <operation>.
         <binary> is a boolean indicating if the oepration only works with two operands
         <initial_value> is the value that total starts off at when evaluating
@@ -27,11 +38,12 @@ class Operation:
         self.standard = standard
         self.translate = translate
 
-addition = Operation("+", False, initial_value = "0")
-subtraction = Operation("-", True)
-multiplication = Operation("*", False, initial_value = "1")
-division = Operation("/", True)
-exponentiation = Operation("**", True)
+addition = Operation(operation = "+", binary = False, initial_value = "0")
+subtraction = Operation(operation = "-", binary = True)
+multiplication = Operation(operation = "*", binary = False, initial_value = "1")
+division = Operation(operation = "/", binary = True)
+exponentiation = Operation(operation = "**", binary = True)
+news_extract = Operation(standard = False, translate = news_translate)
 
 operation_dict = {
     "add" : addition,
@@ -41,5 +53,6 @@ operation_dict = {
     "divide" : division,
     "subtract" : subtraction,
     "exponentiate" : exponentiation,
-    "power" : exponentiation
+    "power" : exponentiation,
+    "summarize" : news_extract
     }
