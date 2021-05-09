@@ -1,6 +1,7 @@
 import operation
 from parser import *
 from collections.abc import Iterable
+import re
 
 class Instruction:
     """A class that represents an instruction. Each object contains the
@@ -9,7 +10,9 @@ class Instruction:
 
     def clean_word(word): #TODO
         """Apply all needed preprocessing to <word> and return the result."""
-        return word.lower().strip()
+        s = word.lower().strip()
+        s = re.sub(r'[^\w\s]','',s)
+        return s
 
     def __init__(self, text):
         self.text = Instruction.clean_word(text) # Raw text
@@ -70,11 +73,19 @@ class Instruction:
             self.instruction = None
             return
 
+        """
+        parser = TextParser(self.text)
+        parser.extract_verb()
+        verbs = parser.verb
+        operations = [Instruction.extract_operation(verb) for verb in verbs]
+        arguments = parser.collect_args()
+        print(verbs, operations, arguments)
+        """
+
         # Extract verbparser = Parser()
         parser = TextParser(self.text)
         parser.extract_verb()
         verbs = parser.verb
-        print("v", verbs)
         # Extract operation
         operations = [Instruction.extract_operation(verb) for verb in verbs]
         if operations[0].standard:

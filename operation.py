@@ -16,6 +16,13 @@ def news_translate(text):
     instruction = "from news_content_extraction_by_keyword import *\nprint(summarize_article_search(\"" + " ".join(arguments)+ "\"))\n"
     return instruction
 
+def language_translate(text):
+    parser = TextParser(text)
+    parser.extract_verb()
+    arguments = parser.collect_args()
+    instruction = "from language_translate import *\nprint(translate_text(\"fr\", \"" + arguments + "\"))\n"
+    return instruction
+
 
 class Operation:
     """A class where each object stores the relevant information about an
@@ -44,6 +51,7 @@ multiplication = Operation(operation = "*", binary = False, initial_value = "1")
 division = Operation(operation = "/", binary = True)
 exponentiation = Operation(operation = "**", binary = True)
 news_extract = Operation(standard = False, translate = news_translate)
+translate = Operation(standard = False, translate = language_translate)
 
 operation_dict = {
     "add" : addition,
@@ -54,5 +62,6 @@ operation_dict = {
     "subtract" : subtraction,
     "exponentiate" : exponentiation,
     "power" : exponentiation,
-    "summarize" : news_extract
+    "summarize" : news_extract,
+    "translate" : translate
     }
