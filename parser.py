@@ -74,7 +74,7 @@ class TextParser:
         for word in self.parsed_text:
             for ops in self.ops:
                 if self.equals(ops, word[0]):
-                    self.verb = ops
+                    self.verb = [ops]
                     return [ops]
         return self.extract_verb_math()
 
@@ -133,9 +133,9 @@ class TextParser:
         return " ".join(temp[idx + 1:])
     
     def collect_args(self):
-        if self.verb == 'summarize':
+        if self.verb[0] == 'summarize':
             return self.collect_args_summary()
-        elif self.verb == 'translate':
+        elif self.verb[0] == 'translate':
             return self.collect_args_translate()
         else:
             return self.collect_args_math()
@@ -154,7 +154,7 @@ class TextParser:
 
 
 if __name__ == "__main__":
-    text = "add 7 and 8"
+    text = "summarize an article about cruise ships"
     custom_sent_tokenizer = PunktSentenceTokenizer(text)
     tokenized = custom_sent_tokenizer.tokenize(text)
     words = nltk.word_tokenize(tokenized[0])
