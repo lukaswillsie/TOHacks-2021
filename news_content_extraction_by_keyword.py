@@ -15,7 +15,7 @@ def search_keyword(keywords, idx):
 
     # search returns an iterator of urls
     # tbs is the time to search (“qdr:d” is last day, “qdr:m” is last month)
-    for url in search(keywords, lang="en", tbs="qdr:w", pause = 0.1, start = idx, stop = idx + 1):
+    for url in search(keywords + " news", lang="en", tbs="qdr:w", pause = 0.1, start = idx, stop = idx + 1):
         # search the url, if video does not appear in it then return it
         pattern_skip = 'video'
         if not re.search(pattern_skip, url):

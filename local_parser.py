@@ -1,9 +1,11 @@
 import nltk
-from nltk.corpus import state_union
 from nltk.tokenize import PunktSentenceTokenizer
 from nltk import word_tokenize, pos_tag
 from nltk.corpus import wordnet
 from stat_parser import Parser
+import math
+from math import sqrt
+from itertools import count, islice
 
 synonym_dict = {
     'add' : ('plus',),
@@ -51,6 +53,24 @@ class TextParser:
         self.verb = []
         self.verb_ranges = []
         self.language = ''
+        self.keywords = ['odd', 'even', 'prime', 'composite', 'squares', 'square', 'cubes', 'cube']
+        self.special = sum([word[0] in self.keywords for word in self.parsed_text]) > 0
+        self.special_keywords = set()
+        for word in self.parsed_text:
+            if word[0] in self.keywords:
+                self.special_keywords.add(word[0])
+        self.special_keywords = list(self.special_keywords)
+        self.d = d = {
+            "odd": lambda x: x% 2 == 1,
+            "even": lambda x: x% 2 == 0,
+            "square": lambda x: math.sqrt(x).is_integer(),
+            "cube":lambda x: (x**(1./3.)).is_integer(),
+            "squares": lambda x: math.sqrt(x).is_integer(),
+            "cubes":lambda x: (x**(1./3.)).is_integer(),
+            "prime": lambda x: x > 1 and all(x % i for i in islice(count(2), int(sqrt(x)-1))),
+            "composite": lambda x: x > 1 and not all(x % i for i in islice(count(2), int(sqrt(x)-1)))
+        }
+        
 
     def extract_verb_math(self):
         ids = []
@@ -105,6 +125,17 @@ class TextParser:
             res.append(self.collect_args_math_helper(self.verb_ranges[j] + 1, self.verb_ranges[j + 1]))
         res.append(self.collect_args_math_helper(self.verb_ranges[-1], len(self.parsed_text)))
         return res
+    
+    def special_range(self, r, keywords):
+        return_lst = []
+        for i in r:
+            add = True
+            for keyword in keywords:
+                if not self.d[keyword](i):
+                    add = False
+            if add:
+                return_lst.append(i)
+        return return_lst
 
     def collect_args_math_helper(self, start, end):
         idx = []
@@ -121,7 +152,11 @@ class TextParser:
             else:
                 temp = []
             if 'TO' in temp and ('from' in self.parsed_text[idx[i] - 1][0] or 'between' in self.parsed_text[idx[i] - 1][0]):
-                res.append(range(min(vals[i], vals[i + 1]), max(vals[i], vals[i + 1]) + 1))
+                ran = range(min(vals[i], vals[i + 1]), max(vals[i], vals[i + 1]) + 1)
+                if self.special:
+                    res.extend(self.special_range(ran, self.special_keywords))
+                else:
+                    res.append(ran)
                 i += 1
             else:
                 res.append(vals[i]) 
@@ -176,10 +211,8 @@ class TextParser:
                 s.add(wordz)
         return s
 
-
-
 if __name__ == "__main__":
-    text = "what is the sum of 8 and 9 and 10 and 11"
+    text = "sum the odd perfect squares from 1 to 100"
     custom_sent_tokenizer = PunktSentenceTokenizer(text)
     tokenized = custom_sent_tokenizer.tokenize(text)
     words = nltk.word_tokenize(tokenized[0])
@@ -190,4 +223,5 @@ if __name__ == "__main__":
     print('summarize: ', parser.get_synonyms('summarize'))
     print('is: ', parser.get_synonyms('is'))
     print(parser.extract_verb())
+    print(parser.special_keywords)
     print(parser.collect_args())
