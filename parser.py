@@ -3,7 +3,6 @@ from nltk.corpus import state_union
 from nltk.tokenize import PunktSentenceTokenizer
 from nltk import word_tokenize, pos_tag
 from nltk.corpus import wordnet
-from IPython.display import display
 from stat_parser import Parser
 
 synonym_dict = {
@@ -30,7 +29,8 @@ class TextParser:
         )
         self.ops = (
             'summarize',
-            'translate'
+            'translate',
+            'question'
         )
         custom_sent_tokenizer = PunktSentenceTokenizer(text)
         tokenized = custom_sent_tokenizer.tokenize(text)
@@ -72,12 +72,20 @@ class TextParser:
     
     def extract_verb(self):
         temp = self.get_synonyms('summarize').union(self.get_synonyms('find'))
+        if self.parsed_text[0][0].lower() in ['who', 'where', 'when', 'why', 'how']:
+            self.verb = ['question']
+            return ['question'] 
         for word in self.parsed_text:
             for ops in self.ops:
                 if self.equals(ops, word[0]):
                     self.verb = [ops]
                     return [ops]
-        return self.extract_verb_math()
+        for word in self.parsed_text:
+            for ops in self.math_ops:
+                if self.equals(ops, word[0]):
+                    return self.extract_verb_math()
+        self.verb = ['question']
+        return ['question']
 
     def collect_args_math(self):
         res = []
