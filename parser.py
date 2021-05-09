@@ -41,11 +41,16 @@ class TextParser:
                 for ops in self.math_ops:
                     if self.equals(ops, word[0]):
                         self.verb = ops
-            temp = [self.parsed_text[j][1] for j in range(i,i+3)]
+                        return ops
+            try:
+                temp = [self.parsed_text[j][1] for j in range(i,i+3)]
+            except:
+                temp = []
             if temp == ['IN', 'DT', 'NN']:
                 for ops in self.math_ops:
                     if self.equals(ops, self.parsed_text[i + 2][0]):
                         self.verb = ops
+                        return ops
         return None
     
     def extract_verb_summary(self):
@@ -118,7 +123,7 @@ class TextParser:
 
 
 if __name__ == "__main__":
-    text = "summarize me something on trading and bitcoin and the market"
+    text = "add 4 to 10"
     custom_sent_tokenizer = PunktSentenceTokenizer(text)
     tokenized = custom_sent_tokenizer.tokenize(text)
     words = nltk.word_tokenize(tokenized[0])
