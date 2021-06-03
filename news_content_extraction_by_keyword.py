@@ -8,13 +8,13 @@ from langdetect import detect
 import openai
 import random
 
-openai.api_key = "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"
+openai.api_key = os.env["OPEN_AI_API_KEY"]
 
 def search_keyword(keywords, idx):
     """Return the <idx> url for a Google News search on <keywords>."""
 
     # search returns an iterator of urls
-    # tbs is the time to search (‚Äúqdr:d‚Äù is last day, ‚Äúqdr:m‚Äù is last month)
+    # tbs is the time to search (ìqdr:dî is last day, ìqdr:mî is last month)
     for url in search(keywords + " news", lang="en", tbs="qdr:w", pause = 0.1, start = idx, stop = idx + 1):
         # search the url, if video does not appear in it then return it
         pattern_skip = 'video'
